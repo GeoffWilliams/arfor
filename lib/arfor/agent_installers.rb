@@ -106,7 +106,7 @@ module Arfor
           pe_version = tarball.match(/puppet-enterprise-(\d{4}\.\d+\.\d+)/).captures.first
 
           # look for the agent version
-          agent_package = %x(tar ztf #{tarball} **/puppet-agent*)
+          agent_package = %x(tar ztf #{tarball} '**/puppet-agent*')
           agent_version = agent_package.match(/puppet-agent-(\d+\.\d+\.\d+)/).captures.first
         else
           Escort::Logger.error.error "File not found: #{tarball}"

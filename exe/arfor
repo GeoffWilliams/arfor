@@ -16,12 +16,11 @@
 
 require 'escort'
 require 'arfor'
-require 'arfor/version'
 require 'arfor/agent_installers'
 require 'arfor/gems'
 
 # display help if nothing specified
-ARGV.push('-h') if ARGV.empty
+ARGV.push('-h') if ARGV.empty?
 
 Escort::App.create do |app|
   app.version Arfor::VERSION
@@ -54,7 +53,9 @@ Escort::App.create do |app|
     app.command :gems do |command|
       command.summary "Download gems"
       command.description "Download required gems locally for faster deployments"
-      Arfor::Gems::download()
+      command.action do |options, arguments|
+        Arfor::Gems::download()
+      end
     end
   end
 end

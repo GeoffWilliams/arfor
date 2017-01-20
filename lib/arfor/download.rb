@@ -18,7 +18,7 @@ require 'uri'
 
 module Arfor
   module Download
-    def get(url)
+    def self.get(url)
       uri = URI.parse(url)
       filename = File.basename(uri.path)
       if ! File.exists?(File.join(Dir.pwd, filename))
@@ -29,7 +29,7 @@ module Arfor
       end
     end
 
-    def gem(gem)
+    def self.gem(gem)
       system("gem fetch #{gem}")
     end
   end

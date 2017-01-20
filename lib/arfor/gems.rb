@@ -36,7 +36,7 @@ module Arfor
 
     GEM_DIR = 'gems'
 
-    def download(gems = STANDARD_GEMS)
+    def self.download(gems = STANDARD_GEMS)
       FileUtils.mkdir_p(GEM_DIR)
       Dir.chdir(GEM_DIR) { |dir|
         gems.each { |gem|

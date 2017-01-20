@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+require 'fileutils'
 
 module Arfor
   module AgentInstallers
@@ -73,7 +74,7 @@ module Arfor
       'x64',
     ]
 
-    def download(pe_version, agent_version)
+    def self.download(pe_version, agent_version)
       base_url          = "https://pm.puppetlabs.com/puppet-agent/#{pe_version}/#{agent_version}/repos"
       base_url_normal   = "#{base_url}/puppet-agent-"
       base_url_windows  = "#{base_url}/windows/puppet-agent-"

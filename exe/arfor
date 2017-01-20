@@ -25,8 +25,8 @@ ARGV.push('-h') if ARGV.empty
 
 Escort::App.create do |app|
   app.version Arfor::VERSION
-  app.summary "pe_rbac"
-  app.description "create RBAC users and install tokens"
+  app.summary "Arfor"
+  app.description "Handy bits and pieces for puppet"
 
   app.command :agent_installers do |command|
     command.summary "Download agents"
@@ -49,6 +49,12 @@ Escort::App.create do |app|
       agent_version = options[:global][:commands][cmd][:options][:agent_version]
 
       Arfor::AgentInstallers::download(pe_version, agent_version)
+    end
+
+    app.command :gems do |command|
+      command.summary "Download gems"
+      command.description "Download required gems locally for faster deployments"
+      Arfor::Gems::download()
     end
   end
 end

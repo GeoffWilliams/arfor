@@ -18,6 +18,7 @@ require 'escort'
 require 'arfor'
 require 'arfor/agent_installers'
 require 'arfor/gems'
+require 'pe_info/tarball'
 
 # display help if nothing specified
 ARGV.push('-h') if ARGV.empty?
@@ -53,7 +54,7 @@ Escort::App.create do |app|
       agent_version = options[:global][:commands][cmd][:options][:agent_version]
       pe_tarball    = options[:global][:commands][cmd][:options][:pe_tarball]
       if pe_tarball
-        pe_version, agent_version = Arfor::AgentInstallers::inspect(pe_tarball)
+        pe_version, agent_version = PeInfo::Tarball::inspect(pe_tarball)
       end
       Arfor::AgentInstallers::download(pe_version, agent_version)
     end

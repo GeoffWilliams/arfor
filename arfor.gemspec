@@ -27,4 +27,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
 
   spec.add_runtime_dependency "escort", "0.4.0"
+  spec.add_runtime_dependency "pe_info", "0.1.4"
 end

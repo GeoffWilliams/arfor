@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+#
+# Copyright 2016 Geoff Williams for Puppet Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+require 'escort'
+require 'arfor'
+require 'arfor/version'
+require 'arfor/agent_installers'
+require 'arfor/gems'
+
+# display help if nothing specified
+ARGV.push('-h') if ARGV.empty
+
+Escort::App.create do |app|
+  app.version Arfor::VERSION
+  app.summary "pe_rbac"
+  app.description "create RBAC users and install tokens"
+
+  app.command :agent_installers do |command|
+    command.summary "Download agents"
+    command.description "Download agent installers locally for faster deployments"
+    command.options do |opts|
+      opts.opt(:pe_version,
+        'PE version to download agents for',
+        :long    => '--pe-version',
+        :default => '2016.4.2'
+      )
+      opts.opt(:agent_version,
+        'Agent version to download',
+        :long     => '--agent-version',
+        :default  => '1.7.1'
+      )
+    end
+    command.action do |options, arguments|
+      cmd           = :agent_installers # FIXME obtain this automatically
+      pe_version    = options[:global][:commands][cmd][:options][:pe_version]
+      agent_version = options[:global][:commands][cmd][:options][:agent_version]
+
+      Arfor::AgentInstallers::download(pe_version, agent_version)
+    end
+  end
+end

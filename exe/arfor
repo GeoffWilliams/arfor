@@ -32,12 +32,12 @@ Escort::App.create do |app|
     command.description "Download agent installers locally for faster deployments"
     command.options do |opts|
       opts.opt(:pe_version,
-        'PE version to download agents for',
+        'PE version to download agents for (not needed if tarball specified)',
         :long    => '--pe-version',
         :default => '2016.4.2'
       )
       opts.opt(:agent_version,
-        'Agent version to download',
+        'Agent version to download (not needed if tarball specified)',
         :long     => '--agent-version',
         :default  => '1.7.1'
       )

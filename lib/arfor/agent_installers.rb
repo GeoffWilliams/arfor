@@ -98,5 +98,24 @@ module Arfor
       end
     end
 
+    def self.inspect(tarball)
+      if tarball =~ /puppet-enterprise-\d{4}\.\d+\.\d+.*\.tar\.gz/
+        if File.exists?(tarball)
+
+          # capture the main version
+          pe_version = tarball.match(/puppet-enterprise-(\d{4}\.\d+\.\d+)/).captures.first
+
+          # look for the agent version
+          agent_package = %x(tar ztf #{tarball} **/puppet-agent*)
+          agent_version = agent_package.match(/puppet-agent-(\d+\.\d+\.\d+)/).captures.first
+        else
+          Escort::Logger.error.error "File not found: #{tarball}"
+        end
+      else
+        Escort::Logger.error.error "Not a puppet install tarball: #{tarball}"
+      end
+      return pe_version, agent_version
+    end
+
   end
 end

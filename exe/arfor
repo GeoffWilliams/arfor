@@ -41,12 +41,20 @@ Escort::App.create do |app|
         :long     => '--agent-version',
         :default  => '1.7.1'
       )
+      opts.opt(:pe_tarball,
+        'Point Arfor at a PE Master tarball to automatically obtain the correct installers',
+        :long     => '--pe-tarball',
+        :type     => :string,
+      )
     end
     command.action do |options, arguments|
       cmd           = :agent_installers # FIXME obtain this automatically
       pe_version    = options[:global][:commands][cmd][:options][:pe_version]
       agent_version = options[:global][:commands][cmd][:options][:agent_version]
-
+      pe_tarball    = options[:global][:commands][cmd][:options][:pe_tarball]
+      if pe_tarball
+        pe_version, agent_version = Arfor::AgentInstallers::inspect(pe_tarball)
+      end
       Arfor::AgentInstallers::download(pe_version, agent_version)
     end
 

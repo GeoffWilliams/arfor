@@ -15,15 +15,30 @@
 # limitations under the License.
 
 require 'uri'
+require 'fileutils'
 
 module Arfor
   module Download
+    TEMP_EXT = '.tmp'
     def self.get(url)
       uri = URI.parse(url)
       filename = File.basename(uri.path)
       if ! File.exists?(File.join(Dir.pwd, filename))
         puts "Downloading #{url}"
-        system("wget #{url}")
+        uri = URI.parse(url)
+        target_file = File.basename(uri.path)
+        tempfile = target_file + TEMP_EXT
+        # download to a temporary file and rename to the real file only if
+        # download succeeded based on exit code.  Prevents using truncated
+        # files as 'real' files by accident if download times out (sigh) or
+        # user cancels.
+        #
+        # Not using a simple BASH pipeline here to allow multi-platform support
+        if system("wget #{url} -o #{tempfile}")
+          FileUtils.mv(tempfile, target_file)
+        end
+        # remove any stray tempfiles that remain
+        FileUtils.rm_f(tempfile)
       else
         puts "installer for #{filename} already downloaded"
       end

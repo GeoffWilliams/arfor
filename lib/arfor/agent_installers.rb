@@ -46,8 +46,6 @@ module Arfor
       'fedora-23-x86_64',
       'fedora-24-i386',
       'fedora-24-x86_64',
-      # 'osx-10.10-x86_64',
-      # 'osx-10.11-x86_64',
       'sles-10-i386',
       'sles-10-x86_64',
       'sles-11-i386',
@@ -74,13 +72,15 @@ module Arfor
       'x64',
     ]
 
+    AGENT_INSTALLER_DIR = 'agent_installers'
+
     def self.download(pe_version, agent_version)
       base_url          = "https://pm.puppetlabs.com/puppet-agent/#{pe_version}/#{agent_version}/repos"
       base_url_normal   = "#{base_url}/puppet-agent-"
       base_url_windows  = "#{base_url}/windows/puppet-agent-"
       suffix            = ".tar.gz"
       suffix_windows    = ".msi"
-      download_dir      = "./agent_installers/#{pe_version}"
+      download_dir      = "./#{AGENT_INSTALLER_DIR}/#{pe_version}"
 
       if ! Dir.exists?(download_dir)
         FileUtils.mkdir_p(download_dir)
@@ -91,7 +91,7 @@ module Arfor
           Arfor::Download::get(url)
         }
 
-          WINDOWS.each { |platform|
+        WINDOWS.each { |platform|
           url = "#{base_url_windows}#{platform}#{suffix_windows}"
           Arfor::Download::get(url)
         }

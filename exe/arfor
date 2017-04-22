@@ -36,11 +36,13 @@ Escort::App.create do |app|
       opts.opt(:pe_version,
         'PE version to download agents for (not needed if tarball specified)',
         :long    => '--pe-version',
+        :type    => :string,
         :default => '2016.4.2'
       )
       opts.opt(:agent_version,
         'Agent version to download (not needed if tarball specified)',
         :long     => '--agent-version',
+        :type     => :string,
         :default  => '1.7.1'
       )
       opts.opt(:pe_tarball,
@@ -72,19 +74,22 @@ Escort::App.create do |app|
       command.summary "Download PE Platform installer"
       command.description "Download Puppet Enterprise"
       command.options do |opts|
-        opts.opt(:version,
-          'PE version to download, eg `2016,4,2`',
-          :long    => '--version',
+        opts.opt(:pe_version,
+          'PE version to download, eg `2016.4.2`',
+          :long    => '--pe-version',
+          :type    => :string,
           :default => nil
         )
         opts.opt(:dist,
           'OS distribution to download, eg `el`',
           :long    => '--dist',
+          :type    => :string,
           :default => nil
         )
         opts.opt(:rel,
           'OS distribution version to download, eg `7`',
           :long    => '--rel',
+          :type    => :string,
           :default => nil
         )
         opts.opt(:arch,
@@ -94,12 +99,12 @@ Escort::App.create do |app|
         )
       end
       command.action do |options, arguments|
-        version = options[:global][:commands][:platform_installer][:options][:version]
-        dist    = options[:global][:commands][:platform_installer][:options][:dist]
-        rel     = options[:global][:commands][:platform_installer][:options][:rel]
-        arch    = options[:global][:commands][:platform_installer][:options][:arch]
+        pe_version  = options[:global][:commands][:platform_installer][:options][:pe_version]
+        dist        = options[:global][:commands][:platform_installer][:options][:dist]
+        rel         = options[:global][:commands][:platform_installer][:options][:rel]
+        arch        = options[:global][:commands][:platform_installer][:options][:arch]
 
-        Arfor::PlatformInstaller::download(version, dist, rel, arch)
+        Arfor::PlatformInstaller::download(pe_version, dist, rel, arch)
       end
     end
   end

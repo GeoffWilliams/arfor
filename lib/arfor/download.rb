@@ -17,6 +17,7 @@
 require 'uri'
 require 'fileutils'
 require 'net/http'
+require 'ruby-progressbar'
 
 module Arfor
   module Download
@@ -24,39 +25,69 @@ module Arfor
     WRAP      = 60
     TEMP_EXT  = '.tmp'
 
-    def self.get(url, target_file=false)
+    def self.resolve_url(url,limit = 10)
+      url_resolved = false
+      file_size = -1
+
+      raise ArgumentError, 'HTTP redirect too deep' if limit == 0
       uri = URI.parse(url)
-      filename = File.basename(uri.path)
-      if ! File.exists?(File.join(Dir.pwd, filename))
-        puts "Downloading #{url}"
-        uri = URI.parse(url)
+      Net::HTTP.start(uri.host, uri.port, :use_ssl=>(uri.scheme == 'https')) { |http|
+        http.read_timeout = 1000
+        resp  = http.head(url)
 
-        # user didn't supply a filename to save final file as so just use one
-        # based on the url
-        if ! target_file
-          target_file = File.basename(uri.path)
+
+        file_size = resp['content-length']
+
+        case resp
+        when Net::HTTPSuccess
+          url_resolved = url
+        when Net::HTTPRedirection
+          url_resolved, file_size = resolve_url(resp['location'], limit - 1)
+        else
+          resp.error!
         end
-        tempfile = target_file + TEMP_EXT
-        # download to a temporary file and rename to the real file only if
-        # download succeeded based on exit code.  Prevents using truncated
-        # files as 'real' files by accident if download times out (sigh) or
-        # user cancels.
+      }
 
-        i = 0
-        Net::HTTP.start(uri.host, uri.port, :use_ssl => true) do |http|
-          resp = http.get(uri)
-          open(target_file, "wb") do |file|
-            print "."
-            if i %= WRAP
-              print "\n"
+      return url_resolved, file_size
+    end
+
+
+    def self.get(url)
+      resolved_url, file_size = resolve_url(url)
+
+      uri = URI.parse(resolved_url)
+      target_file = File.basename(uri.path)
+      tempfile = target_file + TEMP_EXT
+
+      # check if the resolved filename exists locally - this will work even when
+      # user hits the download url that includes ver=latest since we resolve to
+      # the real filenam
+      if ! File.exists?(target_file)
+        progressbar = ProgressBar.create(:title => target_file)
+        Net::HTTP.start(uri.host, uri.port, :use_ssl=>true) do |http|
+          request = Net::HTTP::Get.new uri
+
+
+          http.request request do |resp|
+            puts "Downloading: #{resolved_url}"
+            downloaded_bytes = 0
+            File.open tempfile, 'wb' do |io|
+              resp.read_body do |chunk|
+                downloaded_bytes += chunk.size
+                percent_complete = (downloaded_bytes.to_f / file_size.to_i) * 100
+
+                io.write chunk
+                progressbar.progress=(percent_complete)
+              end
             end
-            file.write(resp.body)
           end
         end
 
-        if system("wget #{url} -o #{tempfile}")
+        if File.exist?(tempfile)
+          # get to here without erroring then safe to move
           FileUtils.mv(tempfile, target_file)
         end
+
         # remove any stray tempfiles that remain
         FileUtils.rm_f(tempfile)
       else

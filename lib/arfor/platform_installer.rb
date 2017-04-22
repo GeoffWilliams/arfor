@@ -18,15 +18,15 @@ require 'arfor/download'
 require 'etc'
 module Arfor
   module PlatformInstaller
-    BASE_URL        = "https://pm.puppetlabs.com/cgi-bin/download.cgi?"
-    LICENCE_FILE    = "#{Etc.getpwuid.dir}/.arfor/licence.key"
-    BASE_TARGET     = "puppet-enterprise-"
-    SUFFIX_TARGET   = ".tar.gz"
+    BASE_URL            = "https://pm.puppetlabs.com/cgi-bin/download.cgi?"
+    LICENCE_FILE        = "#{Etc.getpwuid.dir}/.arfor/licence.key"
+    BASE_TARGET         = "puppet-enterprise-"
+    SUFFIX_TARGET       = ".tar.gz"
 
-    DEFAULT_VERSION = "2017.1.0"
-    DEFAULT_DIST    = "el"
-    DEFAULT_REL     = "7"
-    DEFAULT_ARCH    = "x86_64"
+    DEFAULT_PE_VERSION  = "latest"
+    DEFAULT_DIST        = "el"
+    DEFAULT_REL         = "7"
+    DEFAULT_ARCH        = "x86_64"
 
     def self.licence_check
       licenced = false
@@ -41,18 +41,16 @@ module Arfor
     end
 
 
-    def self.download(version, dist, rel, arch)
+    def self.download(pe_version, dist, rel, arch)
       licence_check
 
-      version = version || DEFAULT_VERSION
-      dist    = dist || DEFAULT_DIST
-      rel     = rel || DEFAULT_REL
-      arch    = arch || DEFAULT_ARCH
-      url     = "#{BASE_URL}&dist=#{dist}&rel=#{rel}&arch=#{arch}&version=#{version}"
+      pe_version  = pe_version || DEFAULT_PE_VERSION
+      dist        = dist || DEFAULT_DIST
+      rel         = rel || DEFAULT_REL
+      arch        = arch || DEFAULT_ARCH
+      url         = "#{BASE_URL}dist=#{dist}&rel=#{rel}&arch=#{arch}&ver=#{pe_version}"
 
-      target_file = "#{BASE_TARGET}#{version}-#{dist}-#{rel}-#{arch}#{SUFFIX_TARGET}"
-
-      Arfor::Download::get(url, target_file)
+      Arfor::Download::get(url)
     end
   end
 end

@@ -74,10 +74,21 @@ module Arfor
 
     AGENT_INSTALLER_DIR = 'agent_installers'
 
+    @@base_url = "https://pm.puppetlabs.com/puppet-agent"
+
+    def self.base_url=(base_url)
+      @@base_url = base_url
+    end
+
+    def self.base_url
+      @@base_url
+    end
+
     def self.download(pe_version, agent_version)
-      base_url          = "https://pm.puppetlabs.com/puppet-agent/#{pe_version}/#{agent_version}/repos"
-      base_url_normal   = "#{base_url}/puppet-agent-"
-      base_url_windows  = "#{base_url}/windows/puppet-agent-"
+
+      base_url_agent    = "#{@@base_url}/#{pe_version}/#{agent_version}/repos"
+      base_url_normal   = "#{base_url_agent}/puppet-agent-"
+      base_url_windows  = "#{base_url_agent}/windows/puppet-agent-"
       suffix            = ".tar.gz"
       suffix_windows    = ".msi"
       download_dir      = "./#{AGENT_INSTALLER_DIR}/#{pe_version}"

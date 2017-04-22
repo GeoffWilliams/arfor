@@ -1,9 +1,0 @@
-#!/usr/bin/env ruby
-#
-# A fake wget that always succeeds
-Dir.chdir('/')
-url=ARGV[0]
-argument=ARGV[1]
-tempfile=ARGV[2]
-
-puts tempfile

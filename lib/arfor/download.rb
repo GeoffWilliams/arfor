@@ -44,7 +44,8 @@ module Arfor
         when Net::HTTPRedirection
           url_resolved, file_size = resolve_url(resp['location'], limit - 1)
         else
-          resp.error!
+          #resp.error!
+          raise "Error #{resp.code} downloading #{url}"
         end
       }
 
@@ -64,7 +65,7 @@ module Arfor
       # the real filenam
       if ! File.exists?(target_file)
         progressbar = ProgressBar.create(:title => target_file)
-        Net::HTTP.start(uri.host, uri.port, :use_ssl=>true) do |http|
+        Net::HTTP.start(uri.host, uri.port, :use_ssl=>(uri.scheme == 'https')) do |http|
           request = Net::HTTP::Get.new uri
 
 
@@ -88,10 +89,8 @@ module Arfor
           FileUtils.mv(tempfile, target_file)
         end
 
-        # remove any stray tempfiles that remain
-        FileUtils.rm_f(tempfile)
       else
-        puts "installer for #{filename} already downloaded"
+        puts "installer for #{target_file} already downloaded"
       end
     end
 

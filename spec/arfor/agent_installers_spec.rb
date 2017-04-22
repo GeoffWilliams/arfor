@@ -7,15 +7,14 @@ require "fakefs/safe"
 describe Arfor::AgentInstallers do
 
   after do
-    ENV['PATH'] = PATH_ORIG
     FakeFS::FileSystem.clear
   end
 
   it "downloads the installers without erroring" do
-    ENV['PATH'] = "#{WGET_PATH_PASSES}:#{ENV['PATH']}"
 
     FakeFS do
       # even nastier hack - see notes in download_spec.rb
+      Arfor::AgentInstallers.base_url = "#{FAKE_DOWNLOAD_SERVER}/puppet-agent"
       workdir = File.join(Arfor::AgentInstallers::AGENT_INSTALLER_DIR, PE_VERSION)
       FileUtils.mkdir_p(workdir)
       Dir.chdir(workdir) {

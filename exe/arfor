@@ -84,10 +84,10 @@ Escort::App.create do |app|
         )
         opts.opt(:rel,
           'OS distribution version to download, eg `7`',
-          :long    => '--dist',
+          :long    => '--rel',
           :default => nil
         )
-        opts.opt(:rel,
+        opts.opt(:arch,
           'OS distribution architecture to download, eg `x86_64`',
           :long    => '--arch',
           :default => nil

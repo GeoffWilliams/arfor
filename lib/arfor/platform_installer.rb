@@ -18,10 +18,12 @@ require 'arfor/download'
 require 'etc'
 module Arfor
   module PlatformInstaller
-    BASE_URL = "https://pm.puppetlabs.com/cgi-bin/download.cgi?"
-    LICENCE_FILE = "#{Etc.getpwuid.dir}/.arfor/licence.key"
+    BASE_URL        = "https://pm.puppetlabs.com/cgi-bin/download.cgi?"
+    LICENCE_FILE    = "#{Etc.getpwuid.dir}/.arfor/licence.key"
+    BASE_TARGET     = "puppet-enterprise-"
+    SUFFIX_TARGET   = ".tar.gz"
 
-    DEFAULT_VERSION = "latest"
+    DEFAULT_VERSION = "2017.1.0"
     DEFAULT_DIST    = "el"
     DEFAULT_REL     = "7"
     DEFAULT_ARCH    = "x86_64"
@@ -47,6 +49,8 @@ module Arfor
       rel     = rel || DEFAULT_REL
       arch    = arch || DEFAULT_ARCH
       url     = "#{BASE_URL}&dist=#{dist}&rel=#{rel}&arch=#{arch}&version=#{version}"
+
+      target_file = "#{BASE_TARGET}#{version}-#{dist}-#{rel}-#{arch}#{SUFFIX_TARGET}"
 
       Arfor::Download::get(url, target_file)
     end

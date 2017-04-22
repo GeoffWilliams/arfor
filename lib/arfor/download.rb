@@ -16,10 +16,14 @@
 
 require 'uri'
 require 'fileutils'
+require 'net/http'
 
 module Arfor
   module Download
-    TEMP_EXT = '.tmp'
+
+    WRAP      = 60
+    TEMP_EXT  = '.tmp'
+
     def self.get(url, target_file=false)
       uri = URI.parse(url)
       filename = File.basename(uri.path)
@@ -37,8 +41,19 @@ module Arfor
         # download succeeded based on exit code.  Prevents using truncated
         # files as 'real' files by accident if download times out (sigh) or
         # user cancels.
-        #
-        # Not using a simple BASH pipeline here to allow multi-platform support
+
+        i = 0
+        Net::HTTP.start(uri.host, uri.port, :use_ssl => true) do |http|
+          resp = http.get(uri)
+          open(target_file, "wb") do |file|
+            print "."
+            if i %= WRAP
+              print "\n"
+            end
+            file.write(resp.body)
+          end
+        end
+
         if system("wget #{url} -o #{tempfile}")
           FileUtils.mv(tempfile, target_file)
         end

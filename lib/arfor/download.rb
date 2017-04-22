@@ -20,13 +20,18 @@ require 'fileutils'
 module Arfor
   module Download
     TEMP_EXT = '.tmp'
-    def self.get(url)
+    def self.get(url, target_file=false)
       uri = URI.parse(url)
       filename = File.basename(uri.path)
       if ! File.exists?(File.join(Dir.pwd, filename))
         puts "Downloading #{url}"
         uri = URI.parse(url)
-        target_file = File.basename(uri.path)
+
+        # user didn't supply a filename to save final file as so just use one
+        # based on the url
+        if ! target_file
+          target_file = File.basename(uri.path)
+        end
         tempfile = target_file + TEMP_EXT
         # download to a temporary file and rename to the real file only if
         # download succeeded based on exit code.  Prevents using truncated

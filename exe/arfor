@@ -18,6 +18,7 @@ require 'escort'
 require 'arfor'
 require 'arfor/agent_installers'
 require 'arfor/gems'
+require 'arfor/platform_installer'
 require 'pe_info/tarball'
 
 # display help if nothing specified
@@ -64,6 +65,41 @@ Escort::App.create do |app|
       command.description "Download required gems locally for faster deployments"
       command.action do |options, arguments|
         Arfor::Gems::download()
+      end
+    end
+
+    app.command :platform_installer do |command|
+      command.summary "Download PE Platform installer"
+      command.description "Download Puppet Enterprise"
+      command.options do |opts|
+        opts.opt(:version,
+          'PE version to download, eg `2016,4,2`',
+          :long    => '--version',
+          :default => nil
+        )
+        opts.opt(:dist,
+          'OS distribution to download, eg `el`',
+          :long    => '--dist',
+          :default => nil
+        )
+        opts.opt(:rel,
+          'OS distribution version to download, eg `7`',
+          :long    => '--dist',
+          :default => nil
+        )
+        opts.opt(:rel,
+          'OS distribution architecture to download, eg `x86_64`',
+          :long    => '--arch',
+          :default => nil
+        )
+      end
+      command.action do |options, arguments|
+        version = options[:global][:commands][:platform_installer][:options][:version]
+        dist    = options[:global][:commands][:platform_installer][:options][:dist]
+        rel     = options[:global][:commands][:platform_installer][:options][:rel]
+        arch    = options[:global][:commands][:platform_installer][:options][:arch]
+
+        Arfor::PlatformInstaller::download(version, dist, rel, arch)
       end
     end
   end

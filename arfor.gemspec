@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{a cool tool to download bits n pieces for puppet}
   spec.description   = %q{make puppet installers quicker and more reliable}
   spec.homepage      = "https://github.com/GeoffWilliams/arfor/"
-  spec.license       = "Apache 2.0"
+  spec.license       = "Apache-2.0"
 
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|

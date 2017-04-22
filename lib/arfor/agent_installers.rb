@@ -48,7 +48,6 @@ module Arfor
       'fedora-25-x86_64',
       'sles-11-i386',
       'sles-11-x86_64',
-      'sles-12-i386',
       'sles-12-x86_64',
       'solaris-10-i386',
       'solaris-10-sparc',

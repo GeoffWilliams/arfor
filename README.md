@@ -22,6 +22,18 @@ Or install it yourself as:
 
 ## Usage
 
+### Making puppet forge modules
+```
+arfor github_module
+```
+
+#### Features
+* Metadata and github descriptions written
+* PDQTest installed
+* README.md re-written with link to reference docs
+* Enable travis-ci testing
+
+
 ### Making control repositories
 ```
 arfor control_repo

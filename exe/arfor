@@ -112,8 +112,9 @@ Escort::App.create do |app|
     app.command :control_repo do |command|
       command.summary "Control Repository"
       command.description "Create a Puppet Control Repository, setup for testing with onceover"
-
-      Arfor::ControlRepo::create()
+      command.action do |options, arguments|
+        Arfor::ControlRepo::create()
+      end
     end
   end
 end

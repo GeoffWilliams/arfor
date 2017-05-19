@@ -19,10 +19,16 @@ module Arfor
     UPSTREAM_EXAMPLE  = 'https://github.com/puppetlabs/control-repo'
     CLEANUP_FILES     = [
       'README.md',
-      'LICENSE'
+      'LICENSE',
+      'site/role/manifests/database_server.pp',
+      'site/role/manifests/web_server.pp',
+      'site/role/manifests/database_server.pp',
+      'site/role/manifests/example.pp',
+      'site/profile/manifests/example.pp',
     ]
 
     VENDORED_FILES    = '../../res/control_repo/.'
+    CLEAN_RUBY        = "unset RUBYLIB GEM_HOME GEM_PATH RUBYOPT BUNDLE_GEMFILE; "
 
     # create a new contorl repository in a directory ./puppet-control
     def self.create()
@@ -34,8 +40,14 @@ module Arfor
 
         # Step 2 - crud cleanup
         CLEANUP_FILES.each { |f|
-          File.rm(f)
+          # swallow errors relating to files that are no longer in upstream
+          begin
+            File.delete(f)
+          rescue
+          end
         }
+        # ...And remove upstream git repo - not needed
+        FileUtils.rm_rf(File.join(WORKING_DIR, '.git'))
 
         # Step 3 - Copy in files
         dir = File.join(File.dirname(File.expand_path(__FILE__)), VENDORED_FILES)
@@ -43,8 +55,8 @@ module Arfor
 
         # Step 4 - Install onceover
         Dir.chdir(WORKING_DIR) {
-          system("bundle install")
-          system("bundle exec onceover init")
+          system("#{CLEAN_RUBY} bundle install")
+          system("#{CLEAN_RUBY} bundle exec onceover init")
 
           # Step 5 - setup git
           system("git init")

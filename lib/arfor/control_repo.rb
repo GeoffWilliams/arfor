@@ -61,6 +61,10 @@ module Arfor
           # Step 5 - setup git
           system("git init")
           system("git checkout -b production")
+
+          # Step 6 - initial git commit
+          system("git add -A")
+          system("git commit -m 'initial' ")
         }
       end
     end

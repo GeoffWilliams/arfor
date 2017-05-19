@@ -19,7 +19,6 @@ require 'etc'
 module Arfor
   module PlatformInstaller
     BASE_URL            = "https://pm.puppetlabs.com/cgi-bin/download.cgi?"
-    LICENCE_FILE        = "#{Etc.getpwuid.dir}/.arfor/licence.key"
     BASE_TARGET         = "puppet-enterprise-"
     SUFFIX_TARGET       = ".tar.gz"
 
@@ -30,8 +29,8 @@ module Arfor
 
     def self.licence_check
       licenced = false
-      if File.exist?(LICENCE_FILE)
-        licenced = File.foreach(LICENCE_FILE).grep(/thanks for registering/)
+      if File.exist?(Arfor::LICENCE_FILE)
+        licenced = File.foreach(Arfor::LICENCE_FILE).grep(/thanks for registering/)
       end
 
       if ! licenced

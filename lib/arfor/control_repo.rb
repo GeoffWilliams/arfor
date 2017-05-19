@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 #
+# Copyright 2017 Geoff Williams for Declarative Systems PTY LTD
 # Copyright 2016 Geoff Williams for Puppet Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");

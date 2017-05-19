@@ -31,4 +31,9 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "escort", "0.4.0"
   spec.add_runtime_dependency "pe_info", "0.1.4"
   spec.add_runtime_dependency 'ruby-progressbar', '1.8.1'
+  spec.add_runtime_dependency "octokit", "~> 4.0"
+  spec.add_runtime_dependency "highline", "1.7.8"
+  spec.add_runtime_dependency "puppet"
+  spec.add_runtime_dependency "pdqtest", "0.4.3"
+  spec.add_runtime_dependency "travis"
 end

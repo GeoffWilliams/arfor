@@ -15,7 +15,16 @@
 # limitations under the License.
 
 require "arfor/version"
+require "etc"
 
 module Arfor
   # Your code goes here...
+  CONFIG_DIR    = "#{Etc.getpwuid.dir}/.arfor"
+  LICENCE_FILE  = "#{CONFIG_DIR}/licence.key"
+  TOKEN_FILE    = "#{CONFIG_DIR}/github_token"
+  TRAVIS_CONF   = "#{Etc.getpwuid.dir}/.travis/config.yml"
+  QUESTION      = "🤖"
+  OK            = "👍"
+  ERROR         = "💩"
+
 end

@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 #
+# Copyright 2017 Geoff Williams for Declarative Systems PTY LTD
 # Copyright 2016 Geoff Williams for Puppet Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +22,7 @@ require 'arfor/gems'
 require 'arfor/platform_installer'
 require 'pe_info/tarball'
 require 'arfor/control_repo'
+require 'arfor/github_module'
 
 # display help if nothing specified
 ARGV.push('-h') if ARGV.empty?
@@ -116,5 +118,14 @@ Escort::App.create do |app|
         Arfor::ControlRepo::create()
       end
     end
+
+    app.command :github_module do |command|
+      command.summary "Github Module"
+      command.description "Create a new Puppet module enabled with PDQTest and upload to GitHub"
+      command.action do |options, arguments|
+        puts Arfor::GithubModule::create()
+      end
+    end
+
   end
 end

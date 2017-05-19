@@ -1,0 +1,4 @@
+# Mock modules needed for testing
+mod 'geoffwilliams-pe_staging', '0.1.0'
+mod 'geoffwilliams-pe_repo', '0.2.0'
+mod 'geoffwilliams-puppet_enterprise', '0.5.3'

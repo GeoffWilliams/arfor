@@ -1,0 +1,12 @@
+source 'https://rubygems.org'
+
+gem 'rake'
+gem 'bundler'
+gem 'onceover'
+gem 'rugged'
+gem 'pry'
+gem 'r10k'
+
+gem 'puppet-strings',
+  :git => 'https://github.com/declarativesystems/puppet-strings',
+  :ref => 'no_dates'

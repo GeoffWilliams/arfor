@@ -20,6 +20,7 @@ require 'arfor/agent_installers'
 require 'arfor/gems'
 require 'arfor/platform_installer'
 require 'pe_info/tarball'
+require 'arfor/control_repo'
 
 # display help if nothing specified
 ARGV.push('-h') if ARGV.empty?
@@ -106,6 +107,13 @@ Escort::App.create do |app|
 
         Arfor::PlatformInstaller::download(pe_version, dist, rel, arch)
       end
+    end
+
+    app.command :control_repo do |command|
+      command.summary "Control Repository"
+      command.description "Create a Puppet Control Repository, setup for testing with onceover"
+
+      Arfor::ControlRepo::create()
     end
   end
 end

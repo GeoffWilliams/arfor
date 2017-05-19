@@ -22,6 +22,20 @@ Or install it yourself as:
 
 ## Usage
 
+### Making control repositories
+```
+arfor control_repo
+```
+
+#### Control Repository features
+* Fully documented
+* Based on upstream puppetlabs example
+* Built-in onceover support
+* Built-in mock-Puppetfile for use by onceover during testing
+* Hieradata validation
+* Creates a local git repo with master branch replaced with production
+
+
 ### Agent installers
 #### PE 2016.4.2 (LTS)
 ```

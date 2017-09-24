@@ -18,51 +18,6 @@ require 'fileutils'
 module Arfor
   module AgentInstallers
 
-    # platforms list obtained by running
-    # cd /opt/puppetlabs/puppet/modules/pe_repo/manifests
-    # cat platform/*.pp | grep pe_repo::
-    # on a puppet enterprise master - you will have to clean up the output...
-
-    PLATFORMS = [
-      'aix-5.3-power',
-      'aix-6.1-power',
-      'aix-7.1-power',
-      'debian-7-amd64',
-      'debian-7-i386',
-      'debian-8-amd64',
-      'debian-8-i386',
-      'el-4-i386',
-      'el-4-x86_64',
-      'el-5-i386',
-      'el-5-x86_64',
-      'el-6-i386',
-      'el-6-s390x',
-      'el-6-x86_64',
-      'el-7-s390x',
-      'el-7-x86_64',
-      'fedora-23-i386',
-      'fedora-23-x86_64',
-      'fedora-24-i386',
-      'fedora-24-x86_64',
-      'fedora-25-i386',
-      'fedora-25-x86_64',
-      'sles-11-i386',
-      'sles-11-x86_64',
-      'sles-12-x86_64',
-      'solaris-10-i386',
-      'solaris-10-sparc',
-      'solaris-11-i386',
-      'solaris-11-sparc',
-      'ubuntu-12.04-amd64',
-      'ubuntu-12.04-i386',
-      'ubuntu-14.04-amd64',
-      'ubuntu-14.04-i386',
-      'ubuntu-16.04-amd64',
-      'ubuntu-16.04-i386',
-      'ubuntu-16.10-amd64',
-      'ubuntu-16.10-i386',
-    ]
-
     WINDOWS = [
       'x86',
       'x64',
@@ -80,7 +35,7 @@ module Arfor
       @@base_url
     end
 
-    def self.download(pe_version, agent_version)
+    def self.download(pe_version, agent_version, supported_platforms, print_urls)
 
       base_url_agent    = "#{@@base_url}/#{pe_version}/#{agent_version}/repos"
       base_url_normal   = "#{base_url_agent}/puppet-agent-"
@@ -93,14 +48,22 @@ module Arfor
         FileUtils.mkdir_p(download_dir)
       end
       Dir.chdir(download_dir) do
-        PLATFORMS.each { |platform|
+        supported_platforms.each { |platform|
           url = "#{base_url_normal}#{platform}#{suffix}"
-          Arfor::Download::get(url)
+          if print_urls
+            puts url
+          else
+            Arfor::Download::get(url)
+          end
         }
 
         WINDOWS.each { |platform|
           url = "#{base_url_windows}#{platform}#{suffix_windows}"
-          Arfor::Download::get(url)
+          if print_urls
+            puts url
+          else
+            Arfor::Download::get(url)
+          end
         }
       end
     end

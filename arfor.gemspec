@@ -6,12 +6,12 @@ require 'arfor/version'
 Gem::Specification.new do |spec|
   spec.name          = "arfor"
   spec.version       = Arfor::VERSION
-  spec.authors       = ["Geoff Williams"]
-  spec.email         = ["geoff.williams@puppet.com"]
+  spec.authors       = ["Declarative Systems"]
+  spec.email         = ["sales@declarativesystems.com"]
 
   spec.summary       = %q{a cool tool to download bits n pieces for puppet}
   spec.description   = %q{make puppet installers quicker and more reliable}
-  spec.homepage      = "https://github.com/GeoffWilliams/arfor/"
+  spec.homepage      = "https://github.com/declarativesystems/arfor/"
   spec.license       = "Apache-2.0"
 
 
@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "sinatra", "1.4.8"
 
   spec.add_runtime_dependency "escort", "0.4.0"
-  spec.add_runtime_dependency "pe_info", "0.2.0"
+  spec.add_runtime_dependency "pe_info", "0.2.1"
   spec.add_runtime_dependency 'ruby-progressbar', '1.8.1'
   spec.add_runtime_dependency "octokit", "~> 4.0"
   spec.add_runtime_dependency "highline", "1.7.8"

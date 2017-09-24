@@ -36,17 +36,10 @@ Escort::App.create do |app|
     command.summary "Download agents"
     command.description "Download agent installers locally for faster deployments"
     command.options do |opts|
-      opts.opt(:pe_version,
-        'PE version to download agents for (not needed if tarball specified)',
-        :long    => '--pe-version',
-        :type    => :string,
-        :default => '2016.4.2'
-      )
-      opts.opt(:agent_version,
-        'Agent version to download (not needed if tarball specified)',
-        :long     => '--agent-version',
-        :type     => :string,
-        :default  => '1.7.1'
+      opts.opt(:print_urls,
+        'Just print the URLS we would use, dont download anything',
+        :long     => '--print-urls',
+        :type     => :boolean,
       )
       opts.opt(:pe_tarball,
         'Point Arfor at a PE Master tarball to automatically obtain the correct installers',
@@ -55,14 +48,13 @@ Escort::App.create do |app|
       )
     end
     command.action do |options, arguments|
-      cmd           = :agent_installers # FIXME obtain this automatically
-      pe_version    = options[:global][:commands][cmd][:options][:pe_version]
-      agent_version = options[:global][:commands][cmd][:options][:agent_version]
-      pe_tarball    = options[:global][:commands][cmd][:options][:pe_tarball]
+      cmd         = :agent_installers # FIXME obtain this automatically
+      print_urls  = options[:global][:commands][cmd][:options][:print_urls]
+      pe_tarball  = options[:global][:commands][cmd][:options][:pe_tarball]
       if pe_tarball
-        pe_version, agent_version = PeInfo::Tarball::inspect(pe_tarball)
+        pe_version, agent_version, supported_platforms = PeInfo::Tarball::inspect(pe_tarball)
       end
-      Arfor::AgentInstallers::download(pe_version, agent_version)
+      Arfor::AgentInstallers::download(pe_version, agent_version, supported_platforms, print_urls)
     end
 
     app.command :gems do |command|

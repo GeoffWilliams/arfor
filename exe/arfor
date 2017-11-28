@@ -15,6 +15,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+# Inline bundler makes us always use bundler to bundle our bundles because
+# there is a conflict for faraday version between puppet_forge and one of
+# the other gems in use.  Bundler will automatically resolve this as long
+# as its used at _any_ level.  This is equivalent to making a tempdir with
+# a Gemfile and running from there, eg this restores functionality with the
+# native ruby running outside of bundler (by forcing bundler to load)
+require 'bundler/inline'
+
+gemfile do
+  source 'https://rubygems.org'
+  gem 'arfor'
+end
+
+
 require 'escort'
 require 'arfor'
 require 'arfor/agent_installers'

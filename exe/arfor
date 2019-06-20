@@ -37,7 +37,7 @@ require 'arfor/gems'
 require 'arfor/platform_installer'
 require 'pe_info/tarball'
 require 'arfor/control_repo'
-require 'arfor/github_module'
+# require 'arfor/github_module'
 
 # display help if nothing specified
 ARGV.push('-h') if ARGV.empty?

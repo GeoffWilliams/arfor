@@ -22,18 +22,18 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.15"
-  spec.add_development_dependency "rake", "~> 12.0"
+  spec.add_development_dependency "bundler", "~> 2.0"
+  spec.add_development_dependency "rake", "~> 12.3"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "fakefs", "0.10.2"
   spec.add_development_dependency "sinatra", "1.4.8"
 
   spec.add_runtime_dependency "escort", "0.4.0"
-  spec.add_runtime_dependency "pe_info", "0.2.1"
-  spec.add_runtime_dependency 'ruby-progressbar', '1.9.0'
-  spec.add_runtime_dependency "octokit", "~> 4.0"
-  spec.add_runtime_dependency "highline", "1.7.8"
+  spec.add_runtime_dependency "pe_info", "0.2.2"
+  spec.add_runtime_dependency 'ruby-progressbar', '1.10.1'
+#  spec.add_runtime_dependency "octokit", "~> 4.14"
+  spec.add_runtime_dependency "highline", "~> 1.6"
   spec.add_runtime_dependency "puppet"
-  spec.add_runtime_dependency "pdqtest", "0.10.0"
-  spec.add_runtime_dependency "travis"
+#  spec.add_runtime_dependency "pdqtest", "2.0.5"
+#  spec.add_runtime_dependency "travis", "1.8.10"
 end
